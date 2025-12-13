@@ -71,6 +71,8 @@ npm run dev
 | `upload_photo` | Upload a photo to Instagram as a new post |
 | `upload_video` | Upload a video to Instagram as a new post |
 | `upload_reel` | Upload a video as an Instagram Reel |
+| `follow_user` | Send a follow request to a user |
+| `unfollow_user` | Unfollow a user |
 
 ## Requirements
 

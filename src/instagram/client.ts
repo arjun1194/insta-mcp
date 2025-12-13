@@ -102,6 +102,15 @@ export interface PublishResult {
   mediaType: 'photo' | 'video' | 'reel';
 }
 
+export interface FollowResult {
+  userId: string;
+  username: string;
+  followedBy: boolean;
+  following: boolean;
+  outgoingRequest: boolean;
+  status: 'followed' | 'requested' | 'unfollowed';
+}
+
 export class InstagramClient {
   private rateLimiter: RateLimiter;
   private currentUserId: string | null = null;
@@ -506,6 +515,62 @@ export class InstagramClient {
       postUrl: `https://www.instagram.com/reel/${media.code}/`,
       caption: media.caption?.text || caption,
       mediaType: 'reel',
+    };
+  }
+
+  async followUser(username: string): Promise<FollowResult> {
+    // First resolve the username to a user ID
+    const user = await this.withRateLimit(() => this.ig.user.searchExact(username));
+    const userId = user.pk.toString();
+
+    // Send follow request
+    const result = await this.withRateLimit(() => this.ig.friendship.create(userId));
+
+    // The result is the friendship_status directly
+    const friendshipStatus = result as unknown as {
+      followed_by?: boolean;
+      following?: boolean;
+      outgoing_request?: boolean;
+    };
+
+    // Determine the status based on the response
+    let status: 'followed' | 'requested' = 'followed';
+    if (friendshipStatus.outgoing_request) {
+      status = 'requested'; // Private account, follow request sent
+    }
+
+    return {
+      userId,
+      username: user.username,
+      followedBy: friendshipStatus.followed_by || false,
+      following: friendshipStatus.following || false,
+      outgoingRequest: friendshipStatus.outgoing_request || false,
+      status,
+    };
+  }
+
+  async unfollowUser(username: string): Promise<FollowResult> {
+    // First resolve the username to a user ID
+    const user = await this.withRateLimit(() => this.ig.user.searchExact(username));
+    const userId = user.pk.toString();
+
+    // Unfollow the user
+    const result = await this.withRateLimit(() => this.ig.friendship.destroy(userId));
+
+    // The result is the friendship_status directly
+    const friendshipStatus = result as unknown as {
+      followed_by?: boolean;
+      following?: boolean;
+      outgoing_request?: boolean;
+    };
+
+    return {
+      userId,
+      username: user.username,
+      followedBy: friendshipStatus.followed_by || false,
+      following: friendshipStatus.following || false,
+      outgoingRequest: friendshipStatus.outgoing_request || false,
+      status: 'unfollowed',
     };
   }
 }

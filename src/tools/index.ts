@@ -51,3 +51,12 @@ export {
   uploadReelDescription,
   uploadReel,
 } from './upload.js';
+
+export {
+  followUserSchema,
+  followUserDescription,
+  followUser,
+  unfollowUserSchema,
+  unfollowUserDescription,
+  unfollowUser,
+} from './friendship.js';

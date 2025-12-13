@@ -31,6 +31,12 @@ import {
   uploadReelSchema,
   uploadReelDescription,
   uploadReel,
+  followUserSchema,
+  followUserDescription,
+  followUser,
+  unfollowUserSchema,
+  unfollowUserDescription,
+  unfollowUser,
 } from './tools/index.js';
 
 export function createServer(igClient: InstagramClient): McpServer {
@@ -136,6 +142,26 @@ export function createServer(igClient: InstagramClient): McpServer {
     uploadReelSchema,
     async (params) => {
       return uploadReel(igClient, params);
+    }
+  );
+
+  // Register follow_user tool
+  server.tool(
+    'follow_user',
+    followUserDescription,
+    followUserSchema,
+    async (params) => {
+      return followUser(igClient, params);
+    }
+  );
+
+  // Register unfollow_user tool
+  server.tool(
+    'unfollow_user',
+    unfollowUserDescription,
+    unfollowUserSchema,
+    async (params) => {
+      return unfollowUser(igClient, params);
     }
   );
 
