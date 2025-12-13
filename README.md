@@ -61,10 +61,10 @@ npm run dev
 
 | Tool | Description |
 |------|-------------|
-| `get_account_overview` | Get Instagram account profile information |
-| `get_recent_posts` | Get recent posts with engagement metrics |
-| `get_followers` | Get list of followers |
-| `get_following` | Get list of accounts you follow |
+| `get_account_overview` | Get Instagram account profile information for any user |
+| `get_recent_posts` | Get recent posts with engagement metrics for any user |
+| `get_followers` | Get list of followers for any user (public accounts or your own) |
+| `get_following` | Get list of accounts a user follows (public accounts or your own) |
 | `get_post_insights` | Get detailed analytics for a specific post |
 | `compare_follow_lists` | Find unfollowers and fans |
 | `search_instagram` | Search for users, hashtags, or places |

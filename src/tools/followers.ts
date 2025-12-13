@@ -3,21 +3,24 @@ import { InstagramClient } from '../instagram/client.js';
 import { formatErrorForMcp } from '../utils/errors.js';
 
 export const followersSchema = {
+  username: z.string().optional().describe(
+    'Instagram username to get followers for. Leave empty to get your own followers.'
+  ),
   limit: z.number().min(1).max(200).default(50).describe(
     'Maximum number of followers to retrieve (1-200). Default is 50.'
   ),
 };
 
 export const followersDescription =
-  'Get a list of your Instagram followers with their profile information.';
+  'Get a list of Instagram followers with their profile information. Can get followers for any public account or your own account.';
 
 export async function getFollowers(
   client: InstagramClient,
-  params: { limit?: number }
+  params: { username?: string; limit?: number }
 ): Promise<{ content: Array<{ type: 'text'; text: string }>; isError?: boolean }> {
   try {
     const limit = params.limit ?? 50;
-    const followers = await client.getFollowers(limit);
+    const followers = await client.getFollowers(params.username, limit);
 
     const result = {
       count: followers.length,

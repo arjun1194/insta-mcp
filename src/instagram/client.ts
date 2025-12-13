@@ -207,8 +207,8 @@ export class InstagramClient {
     return posts;
   }
 
-  async getFollowers(limit: number = 50): Promise<UserInfo[]> {
-    const userId = await this.getCurrentUserId();
+  async getFollowers(username?: string, limit: number = 50): Promise<UserInfo[]> {
+    const userId = username ? await this.resolveUserId(username) : await this.getCurrentUserId();
     const feed = this.ig.feed.accountFollowers(userId);
     const followers: UserInfo[] = [];
 
@@ -239,8 +239,8 @@ export class InstagramClient {
     return followers;
   }
 
-  async getFollowing(limit: number = 50): Promise<UserInfo[]> {
-    const userId = await this.getCurrentUserId();
+  async getFollowing(username?: string, limit: number = 50): Promise<UserInfo[]> {
+    const userId = username ? await this.resolveUserId(username) : await this.getCurrentUserId();
     const feed = this.ig.feed.accountFollowing(userId);
     const following: UserInfo[] = [];
 
@@ -361,8 +361,8 @@ export class InstagramClient {
     // Get all followers and following
     // Using higher limits for comparison
     const [followers, following] = await Promise.all([
-      this.getFollowers(1000),
-      this.getFollowing(1000),
+      this.getFollowers(undefined, 1000),
+      this.getFollowing(undefined, 1000),
     ]);
 
     const followerIds = new Set(followers.map(f => f.userId));
