@@ -5,16 +5,11 @@ import { formatErrorForMcp } from '../utils/errors.js';
 
 // Photo Upload
 export const uploadPhotoSchema = {
-  file_path: z.string().describe(
-    'Absolute path to the image file to upload (JPEG or PNG).'
-  ),
-  caption: z.string().optional().describe(
-    'Caption for the photo post. Default is empty.'
-  ),
+  file_path: z.string().describe('Absolute path to the image file to upload (JPEG or PNG).'),
+  caption: z.string().optional().describe('Caption for the photo post. Default is empty.'),
 };
 
-export const uploadPhotoDescription =
-  'Upload a photo to Instagram as a new post.';
+export const uploadPhotoDescription = 'Upload a photo to Instagram as a new post.';
 
 export async function uploadPhoto(
   client: InstagramClient,
@@ -28,11 +23,15 @@ export async function uploadPhoto(
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            success: true,
-            message: 'Photo uploaded successfully',
-            post: result,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              success: true,
+              message: 'Photo uploaded successfully',
+              post: result,
+            },
+            null,
+            2
+          ),
         },
       ],
     };
@@ -51,15 +50,13 @@ export async function uploadPhoto(
 
 // Video Upload
 export const uploadVideoSchema = {
-  video_path: z.string().describe(
-    'Absolute path to the video file to upload (MP4, H.264 codec recommended).'
-  ),
-  cover_image_path: z.string().describe(
-    'Absolute path to the cover image for the video (JPEG or PNG).'
-  ),
-  caption: z.string().optional().describe(
-    'Caption for the video post. Default is empty.'
-  ),
+  video_path: z
+    .string()
+    .describe('Absolute path to the video file to upload (MP4, H.264 codec recommended).'),
+  cover_image_path: z
+    .string()
+    .describe('Absolute path to the cover image for the video (JPEG or PNG).'),
+  caption: z.string().optional().describe('Caption for the video post. Default is empty.'),
 };
 
 export const uploadVideoDescription =
@@ -81,11 +78,15 @@ export async function uploadVideo(
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            success: true,
-            message: 'Video uploaded successfully',
-            post: result,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              success: true,
+              message: 'Video uploaded successfully',
+              post: result,
+            },
+            null,
+            2
+          ),
         },
       ],
     };
@@ -104,15 +105,15 @@ export async function uploadVideo(
 
 // Reel Upload
 export const uploadReelSchema = {
-  video_path: z.string().describe(
-    'Absolute path to the reel video file (MP4, H.264 codec, vertical 9:16 aspect ratio recommended, max 90 seconds).'
-  ),
-  cover_image_path: z.string().describe(
-    'Absolute path to the cover image for the reel (JPEG or PNG).'
-  ),
-  caption: z.string().optional().describe(
-    'Caption for the reel. Default is empty.'
-  ),
+  video_path: z
+    .string()
+    .describe(
+      'Absolute path to the reel video file (MP4, H.264 codec, vertical 9:16 aspect ratio recommended, max 90 seconds).'
+    ),
+  cover_image_path: z
+    .string()
+    .describe('Absolute path to the cover image for the reel (JPEG or PNG).'),
+  caption: z.string().optional().describe('Caption for the reel. Default is empty.'),
 };
 
 export const uploadReelDescription =
@@ -134,11 +135,15 @@ export async function uploadReel(
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            success: true,
-            message: 'Reel uploaded successfully',
-            post: result,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              success: true,
+              message: 'Reel uploaded successfully',
+              post: result,
+            },
+            null,
+            2
+          ),
         },
       ],
     };

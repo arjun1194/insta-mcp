@@ -2,8 +2,9 @@ import { IgApiClient } from 'instagram-private-api';
 import { readFile, writeFile, access, mkdir } from 'fs/promises';
 import { constants } from 'fs';
 import { dirname } from 'path';
+import { config } from '../utils/config.js';
 
-const SESSION_PATH = './data/session.json';
+const SESSION_PATH = config.paths.sessionFile;
 
 export async function sessionExists(): Promise<boolean> {
   try {

@@ -1,83 +1,133 @@
-# insta-mcp
+# Instagram MCP Server
 
-An Instagram MCP (Model Context Protocol) server that provides AI assistants with tools to access Instagram analytics and insights.
+A professional Model Context Protocol (MCP) server that provides a comprehensive toolkit for interacting with Instagram. This server enables LLMs (like Claude or Gemini) to manage accounts, analyze social graphs, discover content, and engage with the Instagram community directly from their interface.
 
-## Features
+## 🚀 Features
 
-- **Account Overview** - Get profile information including follower/following counts and bio
-- **Recent Posts** - Retrieve posts with engagement metrics (likes, comments, views)
-- **Followers List** - Get your followers with their profile information
-- **Following List** - Get accounts you're following
-- **Post Insights** - Detailed analytics for specific posts including likers and comments
-- **Compare Follow Lists** - Find unfollowers and fans by comparing follower/following lists
-- **Search** - Search for users, hashtags, or places on Instagram
+- **Full Account Control**: Edit profile, manage privacy, and track activity.
+- **Advanced Messaging**: Read history, send text/media, and react to messages.
+- **Content Creation**: Support for Photos, Videos, Reels, and Carousel/Albums.
+- **Deep Insights**: Analyze post performance, followers, and engagement.
+- **Social Graph**: Smart comparison tools to find unfollowers and fans.
+- **Discovery**: Search by user, hashtag, or location.
 
-## Installation
+## 📋 Prerequisites
+
+- **Node.js**: v18 or higher.
+- **Instagram Account**: Standard account credentials.
+
+## 🛠 Installation
 
 ```bash
+git clone https://github.com/your-repo/insta-mcp.git
+cd insta-mcp
 npm install
 npm run build
 ```
 
-## Configuration
+## ⚙️ Configuration
 
-1. Copy the example credentials file:
-   ```bash
-   cp config/credentials.example.json config/credentials.json
-   ```
+The server supports flexible configuration via environment variables or a local JSON file.
 
-2. Add your Instagram credentials to `config/credentials.json`:
-   ```json
-   {
-     "username": "YOUR_INSTAGRAM_USERNAME",
-     "password": "YOUR_INSTAGRAM_PASSWORD"
-   }
-   ```
+### Environment Variables
 
-## Usage
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `INSTAGRAM_USERNAME` | Your Instagram username | - |
+| `INSTAGRAM_PASSWORD` | Your Instagram password | - |
+| `INSTA_DATA_DIR` | Path to store sessions/credentials | `./data` |
 
-### With Claude Code
+### Method 1: `.env` File (Local Dev)
+Create a `.env` in the root:
+```env
+INSTAGRAM_USERNAME=your_user
+INSTAGRAM_PASSWORD=your_pass
+```
 
-Add to your MCP configuration:
+### Method 2: `credentials.json`
+Copy the example and fill in your details:
+```bash
+cp config/credentials.example.json data/credentials.json
+```
+
+---
+
+## 🔧 Tools Catalog
+
+### Account & Activity
+- `get_account_overview`: Get profile stats (followers, following, bio).
+- `get_activity`: See notifications (likes, follows, etc.).
+- `edit_profile`: Update name, bio, website, and email.
+- `block_user`: Block a specific user.
+- `set_privacy`: Toggle between Private and Public account.
+
+### Social Graph
+- `get_followers`: List a user's followers.
+- `get_following`: List who a user follows.
+- `compare_follow_lists`: Detect "Unfollowers" or "Fans".
+- `follow_user` / `unfollow_user`: Manage friendships.
+
+### Media & Interaction
+- `get_recent_posts`: View latest posts for any user.
+- `get_post_insights`: Detailed stats (likes, comments, viewers).
+- `upload_photo` / `upload_video` / `upload_reel`: Post content.
+- `upload_album`: Post carousels with multiple items.
+- `search_locations`: Find locations for tagging.
+- `like_post` / `add_comment` / `reply_to_comment`: Engage with posts.
+
+### Direct Messaging (DM)
+- `get_inbox`: View recent message threads.
+- `get_direct_messages`: Fetch history for a specific thread.
+- `send_direct_message`: Send text to users or groups.
+- `react_to_message`: Add heart reactions to messages.
+- `get_pending_requests`: Manage DM requests.
+- `mute_thread` / `leave_thread`: Thread management.
+
+### Feeds & Discovery
+- `search_instagram`: Search for users, tags, or places.
+- `get_timeline`: Your main home feed.
+- `get_discover`: The explore page feed.
+- `get_saved_posts`: Your bookmarked collections.
+- `get_liked_posts`: History of your likes.
+- `get_tag_feed`: Recent posts for a hashtag.
+
+### Stories
+- `get_stories`: View active stories from your tray or a user.
+- `get_highlights`: Access a user's story highlights.
+
+---
+
+## 🖥 Usage with MCP Clients
+
+### Claude Desktop
+Add the following to your `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
-    "insta-mcp": {
+    "instagram": {
       "command": "node",
-      "args": ["/path/to/insta-mcp/dist/index.js"]
+      "args": ["/ABSOLUTE/PATH/TO/insta-mcp/dist/index.js"],
+      "env": {
+        "INSTAGRAM_USERNAME": "your_username",
+        "INSTAGRAM_PASSWORD": "your_password"
+      }
     }
   }
 }
 ```
 
 ### Development
-
+To run in development mode with auto-reload:
 ```bash
-npm run dev
+npm run format # Format code
+npm run dev    # Build and start
 ```
 
-## Available Tools
+## ⚠️ Security & Ethics
+This project uses the `instagram-private-api`. 
+- **Rate Limiting**: The server includes built-in throttling. Avoid aggressive automated requests.
+- **Compliance**: Adhere to Instagram's Terms of Service. Use for personal analytics and legitimate social management only.
 
-| Tool | Description |
-|------|-------------|
-| `get_account_overview` | Get Instagram account profile information for any user |
-| `get_recent_posts` | Get recent posts with engagement metrics for any user |
-| `get_followers` | Get list of followers for any user (public accounts or your own) |
-| `get_following` | Get list of accounts a user follows (public accounts or your own) |
-| `get_post_insights` | Get detailed analytics for a specific post |
-| `compare_follow_lists` | Find unfollowers and fans |
-| `search_instagram` | Search for users, hashtags, or places |
-| `upload_photo` | Upload a photo to Instagram as a new post |
-| `upload_video` | Upload a video to Instagram as a new post |
-| `upload_reel` | Upload a video as an Instagram Reel |
-| `follow_user` | Send a follow request to a user |
-| `unfollow_user` | Unfollow a user |
-
-## Requirements
-
-- Node.js >= 18.0.0
-
-## License
-
+## 📄 License
 MIT

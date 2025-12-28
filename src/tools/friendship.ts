@@ -4,9 +4,7 @@ import { formatErrorForMcp } from '../utils/errors.js';
 
 // Follow User
 export const followUserSchema = {
-  username: z.string().describe(
-    'Instagram username to follow.'
-  ),
+  username: z.string().describe('Instagram username to follow.'),
 };
 
 export const followUserDescription =
@@ -19,19 +17,24 @@ export async function followUser(
   try {
     const result = await client.followUser(params.username);
 
-    const message = result.status === 'requested'
-      ? `Follow request sent to @${result.username} (private account)`
-      : `Now following @${result.username}`;
+    const message =
+      result.status === 'requested'
+        ? `Follow request sent to @${result.username} (private account)`
+        : `Now following @${result.username}`;
 
     return {
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            success: true,
-            message,
-            ...result,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              success: true,
+              message,
+              ...result,
+            },
+            null,
+            2
+          ),
         },
       ],
     };
@@ -50,13 +53,10 @@ export async function followUser(
 
 // Unfollow User
 export const unfollowUserSchema = {
-  username: z.string().describe(
-    'Instagram username to unfollow.'
-  ),
+  username: z.string().describe('Instagram username to unfollow.'),
 };
 
-export const unfollowUserDescription =
-  'Unfollow an Instagram user.';
+export const unfollowUserDescription = 'Unfollow an Instagram user.';
 
 export async function unfollowUser(
   client: InstagramClient,
@@ -69,11 +69,15 @@ export async function unfollowUser(
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            success: true,
-            message: `Unfollowed @${result.username}`,
-            ...result,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              success: true,
+              message: `Unfollowed @${result.username}`,
+              ...result,
+            },
+            null,
+            2
+          ),
         },
       ],
     };

@@ -26,7 +26,9 @@ async function main() {
     await server.connect(transport);
 
     console.error('Instagram MCP Server started successfully');
-    console.error('Available tools: get_account_overview, get_recent_posts, get_followers, get_following, get_post_insights, compare_follow_lists');
+    console.error(
+      'Available tools: get_account_overview, get_recent_posts, get_followers, get_following, get_post_insights, compare_follow_lists'
+    );
   } catch (error) {
     console.error('Failed to start Instagram MCP Server:', error);
     process.exit(1);

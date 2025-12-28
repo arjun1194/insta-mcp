@@ -3,16 +3,11 @@ import { InstagramClient } from '../instagram/client.js';
 import { formatErrorForMcp } from '../utils/errors.js';
 
 export const followingSchema = {
-  username: z.string().optional().describe(
-    'Instagram username to get following list for. Leave empty to get your own following list.'
-  ),
-  limit: z.number().min(1).max(200).default(50).describe(
-    'Maximum number of accounts to retrieve (1-200). Default is 50.'
-  ),
+  username: z.string().optional().describe('Username to get following list for'),
+  limit: z.number().optional().default(50).describe('Maximum number of accounts to return'),
 };
 
-export const followingDescription =
-  'Get a list of Instagram accounts a user is following. Can get following list for any public account or your own account.';
+export const followingDescription = 'Get the list of accounts a user is following.';
 
 export async function getFollowing(
   client: InstagramClient,
@@ -22,24 +17,25 @@ export async function getFollowing(
     const limit = params.limit ?? 50;
     const following = await client.getFollowing(params.username, limit);
 
-    const result = {
-      count: following.length,
-      following: following.map(user => ({
-        userId: user.userId,
-        username: user.username,
-        fullName: user.fullName,
-        profilePicUrl: user.profilePicUrl,
-        profileUrl: `https://www.instagram.com/${user.username}/`,
-        isPrivate: user.isPrivate,
-        isVerified: user.isVerified,
-      })),
-    };
-
     return {
       content: [
         {
           type: 'text',
-          text: JSON.stringify(result, null, 2),
+          text: JSON.stringify(
+            {
+              username: params.username || 'me',
+              count: following.length,
+              following: following.map((user: any) => ({
+                username: user.username,
+                fullName: user.fullName,
+                profilePicUrl: user.profilePicUrl,
+                isPrivate: user.isPrivate,
+                isVerified: user.isVerified,
+              })),
+            },
+            null,
+            2
+          ),
         },
       ],
     };

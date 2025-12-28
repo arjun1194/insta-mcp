@@ -6,10 +6,10 @@ interface RateLimitConfig {
 }
 
 const DEFAULT_CONFIG: RateLimitConfig = {
-  minDelayMs: 1000,       // Minimum 1 second between requests
-  maxDelayMs: 3000,       // Random delay up to 3 seconds
-  requestsPerWindow: 20,  // Max 20 requests per window
-  windowMs: 60000,        // 1 minute window
+  minDelayMs: 1000, // Minimum 1 second between requests
+  maxDelayMs: 3000, // Random delay up to 3 seconds
+  requestsPerWindow: 20, // Max 20 requests per window
+  windowMs: 60000, // 1 minute window
 };
 
 export class RateLimiter {
@@ -24,9 +24,7 @@ export class RateLimiter {
     const now = Date.now();
 
     // Clean old timestamps outside the window
-    this.requestTimestamps = this.requestTimestamps.filter(
-      ts => now - ts < this.config.windowMs
-    );
+    this.requestTimestamps = this.requestTimestamps.filter((ts) => now - ts < this.config.windowMs);
 
     // Check if we're at the limit for the window
     if (this.requestTimestamps.length >= this.config.requestsPerWindow) {
@@ -39,8 +37,8 @@ export class RateLimiter {
     }
 
     // Add random delay to appear more human-like
-    const randomDelay = this.config.minDelayMs +
-      Math.random() * (this.config.maxDelayMs - this.config.minDelayMs);
+    const randomDelay =
+      this.config.minDelayMs + Math.random() * (this.config.maxDelayMs - this.config.minDelayMs);
     await this.delay(randomDelay);
 
     // Record this request
@@ -48,13 +46,13 @@ export class RateLimiter {
   }
 
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   getStatus(): { requestsInWindow: number; windowMs: number; limit: number } {
     const now = Date.now();
     const recentRequests = this.requestTimestamps.filter(
-      ts => now - ts < this.config.windowMs
+      (ts) => now - ts < this.config.windowMs
     ).length;
 
     return {

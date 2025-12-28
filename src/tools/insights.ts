@@ -3,15 +3,19 @@ import { InstagramClient } from '../instagram/client.js';
 import { formatErrorForMcp } from '../utils/errors.js';
 
 export const postInsightsSchema = {
-  post_id: z.string().describe(
-    'The Instagram post ID (numeric) or shortcode (the code from the post URL, e.g., "CxYz123AbC").'
-  ),
-  include_likers: z.boolean().default(false).describe(
-    'Include list of users who liked the post (up to 50 users).'
-  ),
-  include_comments: z.boolean().default(false).describe(
-    'Include recent comments on the post (up to 20 comments).'
-  ),
+  post_id: z
+    .string()
+    .describe(
+      'The Instagram post ID (numeric) or shortcode (the code from the post URL, e.g., "CxYz123AbC").'
+    ),
+  include_likers: z
+    .boolean()
+    .default(false)
+    .describe('Include list of users who liked the post (up to 50 users).'),
+  include_comments: z
+    .boolean()
+    .default(false)
+    .describe('Include recent comments on the post (up to 20 comments).'),
 };
 
 export const postInsightsDescription =
@@ -46,7 +50,7 @@ export async function getPostInsights(
     if (insights.likers) {
       result.likers = {
         count: insights.likers.length,
-        users: insights.likers.map(user => ({
+        users: insights.likers.map((user) => ({
           username: user.username,
           fullName: user.fullName,
           profileUrl: `https://www.instagram.com/${user.username}/`,
@@ -58,7 +62,7 @@ export async function getPostInsights(
     if (insights.comments) {
       result.comments = {
         count: insights.comments.length,
-        items: insights.comments.map(comment => ({
+        items: insights.comments.map((comment) => ({
           id: comment.id,
           text: comment.text,
           timestamp: comment.timestamp,

@@ -2,7 +2,11 @@
   "mcpServers": {
     "insta-mcp": {
       "command": "node",
-      "args": ["/Users/arjun/Desktop/insta-mcp/dist/index.js"]
+      "args": ["dist/index.js"],
+      "env": {
+        "INSTAGRAM_USERNAME": "YOUR_USERNAME",
+        "INSTAGRAM_PASSWORD": "YOUR_PASSWORD"
+      }
     }
   }
 }

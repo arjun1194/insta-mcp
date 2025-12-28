@@ -1,17 +1,26 @@
 import { z } from 'zod';
-import { InstagramClient, UserSearchResult, HashtagSearchResult, PlaceSearchResult } from '../instagram/client.js';
+import {
+  InstagramClient,
+  UserSearchResult,
+  HashtagSearchResult,
+  PlaceSearchResult,
+} from '../instagram/client.js';
 import { formatErrorForMcp } from '../utils/errors.js';
 
 export const searchSchema = {
-  query: z.string().min(1).describe(
-    'Search query (username, hashtag without #, or location name)'
-  ),
-  search_type: z.enum(['user', 'hashtag', 'place']).default('user').describe(
-    'Type of search: "user" for profiles, "hashtag" for hashtags, "place" for locations. Default is "user".'
-  ),
-  limit: z.number().min(1).max(50).default(10).describe(
-    'Maximum number of results to return (1-50). Default is 10.'
-  ),
+  query: z.string().min(1).describe('Search query (username, hashtag without #, or location name)'),
+  search_type: z
+    .enum(['user', 'hashtag', 'place'])
+    .default('user')
+    .describe(
+      'Type of search: "user" for profiles, "hashtag" for hashtags, "place" for locations. Default is "user".'
+    ),
+  limit: z
+    .number()
+    .min(1)
+    .max(50)
+    .default(10)
+    .describe('Maximum number of results to return (1-50). Default is 10.'),
 };
 
 export const searchDescription =

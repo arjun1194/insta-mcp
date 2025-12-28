@@ -3,12 +3,16 @@ import { InstagramClient } from '../instagram/client.js';
 import { formatErrorForMcp } from '../utils/errors.js';
 
 export const recentPostsSchema = {
-  username: z.string().optional().describe(
-    'Instagram username. Leave empty to get your own posts.'
-  ),
-  limit: z.number().min(1).max(50).default(10).describe(
-    'Number of posts to retrieve (1-50). Default is 10.'
-  ),
+  username: z
+    .string()
+    .optional()
+    .describe('Instagram username. Leave empty to get your own posts.'),
+  limit: z
+    .number()
+    .min(1)
+    .max(50)
+    .default(10)
+    .describe('Number of posts to retrieve (1-50). Default is 10.'),
 };
 
 export const recentPostsDescription =
@@ -24,14 +28,12 @@ export async function getRecentPosts(
 
     const result = {
       count: posts.length,
-      posts: posts.map(post => ({
+      posts: posts.map((post) => ({
         id: post.id,
         shortcode: post.shortcode,
         url: `https://www.instagram.com/p/${post.shortcode}/`,
         type: post.type,
-        caption: post.caption.length > 200
-          ? post.caption.substring(0, 200) + '...'
-          : post.caption,
+        caption: post.caption.length > 200 ? post.caption.substring(0, 200) + '...' : post.caption,
         engagement: {
           likes: post.likeCount,
           comments: post.commentCount,
@@ -43,12 +45,14 @@ export async function getRecentPosts(
       summary: {
         totalLikes: posts.reduce((sum, p) => sum + p.likeCount, 0),
         totalComments: posts.reduce((sum, p) => sum + p.commentCount, 0),
-        averageLikes: posts.length > 0
-          ? Math.round(posts.reduce((sum, p) => sum + p.likeCount, 0) / posts.length)
-          : 0,
-        averageComments: posts.length > 0
-          ? Math.round(posts.reduce((sum, p) => sum + p.commentCount, 0) / posts.length)
-          : 0,
+        averageLikes:
+          posts.length > 0
+            ? Math.round(posts.reduce((sum, p) => sum + p.likeCount, 0) / posts.length)
+            : 0,
+        averageComments:
+          posts.length > 0
+            ? Math.round(posts.reduce((sum, p) => sum + p.commentCount, 0) / posts.length)
+            : 0,
       },
     };
 

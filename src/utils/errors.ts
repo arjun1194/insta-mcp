@@ -20,10 +20,7 @@ export class InstagramError extends Error {
   }
 }
 
-export function handleInstagramError(
-  error: unknown,
-  ig: IgApiClient
-): never {
+export function handleInstagramError(error: unknown, ig: IgApiClient): never {
   if (error instanceof IgCheckpointError) {
     const checkpoint = ig.state.checkpoint as unknown as Record<string, unknown> | undefined;
     const challengeUrl = checkpoint?.url || 'unknown';
@@ -87,11 +84,7 @@ export function handleInstagramError(
     }
 
     if (statusCode === 400) {
-      throw new InstagramError(
-        `Bad request: ${error.message}`,
-        'BAD_REQUEST',
-        false
-      );
+      throw new InstagramError(`Bad request: ${error.message}`, 'BAD_REQUEST', false);
     }
 
     if (statusCode === 404) {
@@ -105,11 +98,7 @@ export function handleInstagramError(
 
   // Unknown error - wrap it
   const message = error instanceof Error ? error.message : 'Unknown error';
-  throw new InstagramError(
-    `Instagram API error: ${message}`,
-    'UNKNOWN_ERROR',
-    false
-  );
+  throw new InstagramError(`Instagram API error: ${message}`, 'UNKNOWN_ERROR', false);
 }
 
 export function formatErrorForMcp(error: unknown): string {
